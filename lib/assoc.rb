@@ -5,13 +5,17 @@ class Assoc
   @key
   @value
   
-  def initialize(keyValueArray)
-    if (keyValueArray.size != 2)
-      raise "ArgumentArray has the wrong size! The size of the Array must be 2."
-    end
-    
-    @key = keyValueArray[0]
-    @value = keyValueArray[1]
+  def initialize(key, value)  
+    @key = key
+    @value = [value]
+  end
+  
+  def self.[](key, value)
+    return Assoc.new(key, value)
+  end
+  
+  def to_s
+    return "Key: " + @key.to_s() + " Value: " + @value.to_s()
   end
   
   def eql?(other)

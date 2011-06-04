@@ -61,14 +61,29 @@ class SortedArrayMap < AbstractMap
   end
   
   def []= (key, value)
+    newAssoc = Assoc[key, value]
+    
     if (self.empty?)
-      @array[0] = new Assoc(key, value)
+      @array[0] = newAssoc
       return
     end
     
-    if (find_index(key) != nil)
-      
+    index = find_index(key)
+    
+    if (index != nil)
+      einzusortierender_wert = Assoc
+      j = i
+      while j > 0 and compare(self[j-1], einzusortierender_wert) == 1 do
+        self[j] = self[j - 1]
+        j = j - 1
+      end
+      self[j] = einzusortierender_wert
     else
+      @array[index].value << value
     end
+  end
+  
+  def insert_sorted(assoc)
+    
   end
 end
