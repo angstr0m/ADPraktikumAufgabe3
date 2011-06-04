@@ -49,4 +49,26 @@ class SortedArrayMap < AbstractMap
       return find_index_recursion(key, array.slice(0..actual_index))
     end
   end
+  
+  def [](key)
+    if(@array.find {|assoc| assoc.key.eql?(key)} == nil)
+      if (@default)
+        return @default
+      else
+        return nil
+      end
+    end
+  end
+  
+  def []= (key, value)
+    if (self.empty?)
+      @array[0] = new Assoc(key, value)
+      return
+    end
+    
+    if (find_index(key) != nil)
+      
+    else
+    end
+  end
 end
