@@ -1,9 +1,8 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+require './abstract_map'
 
 class SortedArrayMap < AbstractMap
-  def initialize(array)
-    @array = array
+  def initialize()
+    @array = []
   end
   
   def empty?()
@@ -19,34 +18,10 @@ class SortedArrayMap < AbstractMap
   end
   
   def find_index(key)
-    return find_index_recursion(key, @array)
-  end
-  
-  private def find_index_recursion(key, array)
-    # Wenn das array nur noch 1 Element besitzt ist das Ende der Rekursion erreicht.
-    # Entweder ist das Element das gesuchte, oder das gesucht Element ist nicht enthalten!
-    if (array.size == 1 )
-      if (array[0].key.eql?(key))
-        # Gesuchtes Element gefunden!
-        return actual_index
-      else
-        # Gesuchtes Element nicht in dieser Datenstruktur enthalten!
-        return nil
-      end
-    end
-    
-    actual_index = array.size/2
-    actual_key = array[actual_index].key
-    
-    if (actual_key.eql?(key))
-      return actual_index
-    end
-    
-    # Rekursion auf der entsprechenden Hälfte des Arrays fortführen
-    if (key > actual_key)
-      return find_index_recursion(key, array.slice(actual_index..(array.size -1)))
+    if (empty?)
+      return nil
     else
-      return find_index_recursion(key, array.slice(0..actual_index))
+      return find_index_recursion(key, 0..(@array.size - 1))
     end
   end
   
@@ -70,20 +45,80 @@ class SortedArrayMap < AbstractMap
     
     index = find_index(key)
     
-    if (index != nil)
-      einzusortierender_wert = Assoc
-      j = i
-      while j > 0 and compare(self[j-1], einzusortierender_wert) == 1 do
-        self[j] = self[j - 1]
-        j = j - 1
+    # Ist der key schon vorhanden?
+    if (index == nil)
+      # Falls der key nicht vorhanden ist, wird das neue key-value Paar sortiert eingefügt.
+      i = @array.size
+      
+      while (i > 0 and @array[i-1].key.hash > newAssoc.key.hash) do
+        @array[i] = @array[i - 1]
+        i -= 1
       end
-      self[j] = einzusortierender_wert
+      
+      @array[i] = newAssoc
     else
-      @array[index].value << value
+      # Falls der key vorhanden ist, wird der alte Wert für value mit dem neuen überschrieben.
+      @array[index].value = newAssoc.value
     end
   end
   
-  def insert_sorted(assoc)
+  def to_s
+    output_string = ""
     
+    @array.each do |elem|
+      output_string += elem.to_s + ", "
+    end
+    
+    return output_string
+  end
+  
+  private
+  
+  def find_index_recursion(key, intervall)
+    
+    if (intervall.first.eql?(intervall.last))
+      if (@array[intervall.first].key.hash.eql?(key.hash))
+        # Gesuchtes Element gefunden!
+        return intervall.first
+      else
+        # Gesuchtes Element ist nicht in dieser Datenstruktur enthalten!
+        return nil
+      end
+    end
+    
+    if (intervall.last.eql?(intervall.first + 1))
+      if (@array[intervall.first].key.hash.eql?(key.hash))
+        # Gesuchtes Element gefunden!
+        return intervall.first
+      elsif (@array[intervall.last].key.hash.eql?(key.hash))
+        return intervall.last
+      else
+        # Gesuchtes Element ist nicht in dieser Datenstruktur enthalten!
+        return nil
+      end
+    end
+    
+    actual_index = (intervall.max - intervall.min) / 2
+    actual_key = @array[actual_index].key
+    
+    # Rekursion auf der entsprechenden Hälfte des Arrays fortführen
+    if (key.hash > actual_key.hash)
+      return find_index_recursion(key, (intervall.min + actual_index)..intervall.max)
+    else
+      return find_index_recursion(key, intervall.min..(intervall.min + actual_index))
+    end
   end
 end
+
+puts (0..1).last
+
+test = SortedArrayMap.new
+test["test2"] = 3
+test["test1"] = 1
+test["test1"] = 2
+test["test3"] = 3
+test["test4"] = 1
+test["test5"] = 2
+
+puts test.to_s()
+puts test.find_index("test2")

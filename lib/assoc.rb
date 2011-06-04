@@ -5,6 +5,9 @@ class Assoc
   @key
   @value
   
+  attr_reader :key
+  attr_accessor :value
+  
   def initialize(key, value)  
     @key = key
     @value = [value]
