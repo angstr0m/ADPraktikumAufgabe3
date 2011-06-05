@@ -2,7 +2,7 @@
 # and open the template in the editor.
 
 class SortedTreeMap < AbstractTreeMap
-  def initialize
+  def initialize()
     
   end
 end
