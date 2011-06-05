@@ -9,7 +9,7 @@ class SortedArrayMap < AbstractMap
     return @array.empty?()
   end
   
-  def fetch(key, &block)
+  def fetch(key = nil, &block)
     if (block_given?)
       return @array.find &block
     else
@@ -62,6 +62,34 @@ class SortedArrayMap < AbstractMap
     end
   end
   
+  def each(&block)
+    @array.each {|elem|
+      block.call(elem.key, elem.value)
+    }
+  end
+  
+  # clone ist bereits in Object ausreichend implementiert!
+  
+  def sort
+    # Ist bereits sortiert!
+    return self
+  end
+  
+  def to_sorted_a
+    #TODO Ist das so richtig? Das Array ist eigentlich schon sortiert soweit es geht! Außer den Hash-Keys bleibt kein anderes Sortier-Kriterium.
+    return @array
+  end
+  
+  # == ist in Object ausreichend implementiert!
+  
+  def eql?(other)
+    return (hash().eql?(other.hash))
+  end
+  
+  def hash
+    return @array.hash
+  end 
+  
   def to_s
     output_string = ""
     
@@ -110,8 +138,6 @@ class SortedArrayMap < AbstractMap
   end
 end
 
-puts (0..1).last
-
 test = SortedArrayMap.new
 test["test2"] = 3
 test["test1"] = 1
@@ -119,6 +145,8 @@ test["test1"] = 2
 test["test3"] = 3
 test["test4"] = 1
 test["test5"] = 2
+
+puts test.fetch{|elem| elem.key.eql?("test2")}
 
 puts test.to_s()
 puts test.find_index("test2")
