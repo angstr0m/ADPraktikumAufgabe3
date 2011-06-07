@@ -15,13 +15,23 @@ class AbstractTreeMap < AbstractMap
   end
   
   def find_node(key, &block)
-    item = @tree.find(key)
+    node = @tree.find(key)
     
     if (block_given?)
-      return yield(item)
+      return yield(node)
     end
     
-    return item
+    return node
+  end
+  
+  def add(data)
+    node = find_node(data.key)
+    
+    if (node.empty?)
+      node.replace(node, new_leaf(data))
+    else
+      node.data.value = data.value
+    end
   end
   
   # Alle Methoden die nicht unterstützt werden abfangen und an den tree weiter delegieren.
