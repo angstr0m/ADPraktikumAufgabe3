@@ -44,20 +44,40 @@ class AbstractTree
   end
   
   def left?(node)
-    
+    return parent.left == self
   end
   
   def right?(node)
-    
+    return parent.right == self
   end
   
   #invariant
   def invariant?
+    # Sortierreihenfolge überprüfen
+    if (left != nil)
+      if(!left.data < self.data)
+        return false
+      end
+    end
     
+    if (right != nil)
+      if(!left.data > self.data)
+        return false
+      end
+    end
+    
+    # Doppelverkettung prüfen
+    if (parent == nil)
+      return false
+    end
+    
+    if (!(right? || left?))
+      return false
+    end
   end
   
   # access
   def parent
-    
+    return @parent
   end
 end
