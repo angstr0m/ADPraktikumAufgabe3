@@ -102,4 +102,71 @@ class AbstractTree
       self.right=(newChild)
     end
   end
+  
+  # Eigenschaften
+  def max
+    maximum_value = self.data.value
+    each_post {|node|
+      if (node.data.value > maximum_value)
+        maximum_value = node.data.value
+      end
+    }
+    return maximum_value
+  end
+  
+  def min
+    minimum_value = self.data.value
+    each_post {|node|
+      if (node.data.value < minimum_value)
+        minimum_value = node.data.value
+      end
+    }
+    return minimum_value
+  end
+  
+  def size
+    reduce(0) {|l,r,n| l+r+1}  
+  end
+  
+  def max_depth
+    reduce(0) {|l,r,n|
+      if (l > r)
+        return l + 1
+      else
+        return r + 1
+      end
+    }
+  end
+  
+  def min_depth
+    reduce(0) {|l,r,n|
+      if (l < r)
+        return l + 1
+      else
+        return r + 1
+      end
+    }
+  end
+  
+  # TODO Was soll diese Methode genau machen?
+  def path_length
+    
+  end
+  
+  def balance
+    
+  end
+  
+  # Ausgabe
+  def to_s
+    reduce("") {|l,r,n|
+      "[" + n.to_s() + l + r + "]" 
+    }
+  end
+  
+  def to_s_indented
+    reduce("") {|l,r,n|
+      " " + n.to_s() + "\n"  + l + r  
+    }
+  end
 end

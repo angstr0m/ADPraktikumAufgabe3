@@ -9,4 +9,21 @@ class EmtpyTree < AbstractTree
   def find(key)
     return self
   end
+  
+  # Traversierungen
+  def each_post(&block)
+    return self
+  end
+  
+  def each_pre(&block)
+    return self
+  end
+  
+  def each_in(&block)
+    return self
+  end
+  
+  def reduce(empty_accu, &block)
+    return empty_accu
+  end
 end
