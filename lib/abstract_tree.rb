@@ -3,8 +3,10 @@ require './sorted_tree'
 
 class AbstractTree
   def initialize(parent)
-    @parent
+    @parent = parent
   end
+  
+  # Klassenmethoden
   
   def self.new_empty
     return EmptyTree.new()
@@ -15,12 +17,16 @@ class AbstractTree
   end
   
   def self.new_node(data, leftSubTree, rightSubTree)
-    return SortedTree.new(data, leftSubTree, rightSubTree)
+    newTree = SortedTree.new(data, leftSubTree, rightSubTree)
+    newTree.left = leftSubTree
+    newTree.right = rightSubTree
+    return newTree
   end
   
-  # predicates
+  # Prädikate
+  
   def tree?
-    
+    return inner? # TODO What I am supposed to do here O_O???
   end
   
   def empty?
@@ -40,7 +46,7 @@ class AbstractTree
   end
   
   def handle?
-    
+    return false # TODO Kann ein Abstract tree überhaupt jemals ein handle sein? Dafür ist doch die abstractTreeMap zuständig.
   end
   
   def left?(node)
@@ -51,7 +57,8 @@ class AbstractTree
     return parent.right == self
   end
   
-  #invariant
+  #Invarianten
+  
   def invariant?
     # Sortierreihenfolge überprüfen
     if (left != nil)
@@ -79,5 +86,20 @@ class AbstractTree
   # access
   def parent
     return @parent
+  end
+  
+  def parent=(parent)
+    @parent = parent
+  end
+  
+  # Bäume ersetzen
+  def replace(oldChild, newChild)    
+    if (oldChild.left?)
+      self.left=(newChild)
+    end
+    
+    if (oldChild.right?)
+      self.right=(newChild)
+    end
   end
 end
