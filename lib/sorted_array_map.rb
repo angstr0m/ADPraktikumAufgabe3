@@ -1,7 +1,8 @@
 require './abstract_map'
 
 class SortedArrayMap < AbstractMap
-  def initialize()
+  def initialize(dafault)
+    super(default)
     @array = []
   end
   
@@ -137,16 +138,3 @@ class SortedArrayMap < AbstractMap
     end
   end
 end
-
-test = SortedArrayMap.new
-test["test2"] = 3
-test["test1"] = 1
-test["test1"] = 2
-test["test3"] = 3
-test["test4"] = 1
-test["test5"] = 2
-
-puts test.fetch{|elem| elem.key.eql?("test2")}
-
-puts test.to_s()
-puts test.find_index("test2")

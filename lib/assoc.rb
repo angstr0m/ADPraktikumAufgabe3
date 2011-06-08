@@ -21,6 +21,10 @@ class Assoc
     return "Key: " + @key.to_s() + " Value: " + @value.to_s()
   end
   
+  def hash
+    return 7 * (@key.hash + @value.hash)
+  end
+  
   def eql?(other)
     if (other.class != Assoc)
       raise "Compared element must be a Assoc!"

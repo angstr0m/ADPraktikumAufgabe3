@@ -13,11 +13,11 @@ class AbstractTree
   end
   
   def self.new_leaf(data)
-    return SortedTree.new(nil, data, new_empty(), new_empty())
+    return SizedSortedTree.new(nil, data, new_empty(), new_empty())
   end
   
   def self.new_node(data, leftSubTree, rightSubTree)
-    newTree = SortedTree.new(nil, data, leftSubTree, rightSubTree)
+    newTree = SizedSortedTree.new(nil, data, leftSubTree, rightSubTree)
     return newTree
   end
   
