@@ -1,11 +1,11 @@
 require './abstract_tree'
 
 class SortedTree < AbstractTree
-  def initialize(parent, data, left, right)
-    super.new(parent)
+  def initialize(parent, data, leftSubTree, rightSubTree)
+    super(parent)
     @data = data
-    @left = left
-    @right = right
+    left = leftSubTree
+    right = rightSubTree
   end
   
   def data
@@ -29,6 +29,64 @@ class SortedTree < AbstractTree
   def right=(tree)
     @right = tree
     tree.parent = self
+  end
+  
+  # Randomisiertes einfügen
+  
+  def addRandom(assoc) 
+    add_as_root = (rand(size+1)== 0) 
+ 
+    if add_as_root 
+      addRoot(assoc) 
+    elsif (data.key < assoc.key)  
+      left.addRandom(assoc)  
+    else         
+      right.addRandom(assoc) 
+    end 
+  end
+  
+  # Root insertion
+  
+  def addRoot(assoc)
+    newNode = add(assoc)
+    
+    addRootT(newNode ,assoc)
+  end
+  
+  def addRootT(node, assoc)
+    if (assoc.key() < node.data.key())
+      node.left = addRoot(node.left, assoc) 
+      node = rotateRight(node)
+    else 
+      node.right = addRoot(node.right, assoc) 
+      node = rotateLeft(node)
+    end
+  end
+  
+  #Invarianten
+  
+  def invariant?
+    # Sortierreihenfolge überprüfen
+    if (left != nil)
+      if(!left.data < self.data)
+        return false
+      end
+    end
+    
+    if (right != nil)
+      if(!left.data > self.data)
+        return false
+      end
+    end
+    
+    # Doppelverkettung prüfen
+    if (parent == nil)
+      return false
+    end
+    
+    if (!(right? || left?))
+      return false
+    end
   end
   
   # Traversierungen
@@ -68,5 +126,40 @@ class SortedTree < AbstractTree
     else
       return left.find(key)
     end
+  end
+  
+  # Bäume ersetzen
+  def replace(oldChild, newChild)    
+    if (oldChild.left?)
+      self.left=(newChild)
+    end
+    
+    if (oldChild.right?)
+      self.right=(newChild)
+    end
+  end
+  
+  # Rotieren
+  
+  def rotateRight(node)
+    temp = node.left
+    node.parent.replace(node, temp)
+    node.left = temp.right
+    temp.right = node
+    if (!temp.invariant? || !node.invariant?)
+      raise "Invariante verletzt!"
+    end
+    return temp
+  end
+
+  def rotataLeft(node)
+    temp = node.right
+    node.parent.replace(node, temp)
+    node.right = temp.left
+    temp.left = node
+    if (!temp.invariant? || !node.invariant?)
+      raise "Invariante verletzt!"
+    end
+    return temp
   end
 end

@@ -14,27 +14,30 @@ class AbstractTreeMap < AbstractMap
     newChild.parent = self
   end
   
-  def find_node(key, &block)
-    node = @tree.find(key)
-    
-    if (block_given?)
-      return yield(node)
-    end
-    
-    return node
-  end
+#  # Root Insertion
+#  
+#  def insertT(node, assoc)
+#    if (node.empty?) 
+#      return new_leaf(assoc);
+#    end
+#
+#    if (assoc.key() < node.data.key())
+#      node.left = insertT(node.left, assoc) 
+#      node = rotateRight(node)
+#    else 
+#      node.right = insertT(node.right, assoc) 
+#      node = rotateLeft(node)
+#    end
+#
+#    return node;
+#  end
+#
+#  def insert(assoc)
+#    node = add(assoc)
+#    node = insertT(node, assoc)
+#  end
   
-  def add(data)
-    node = find_node(data.key)
-    
-    if (node.empty?)
-      node.replace(node, new_leaf(data))
-    else
-      node.data.value = data.value
-    end
-  end
-  
-  # Alle Methoden die nicht unterstützt werden abfangen und an den tree weiter delegieren.
+  # Alle Methoden die nicht unterstützt werden abfangen, und an den tree weiter delegieren.
   def missing_method(method, *args, &block)
     @tree.send(method, *args, &block)
   end

@@ -26,4 +26,9 @@ class EmtpyTree < AbstractTree
   def reduce(empty_accu, &block)
     return empty_accu
   end
+  
+  # Einfügen
+  def addRandom(assoc) 
+    add(assoc) 
+  end
 end

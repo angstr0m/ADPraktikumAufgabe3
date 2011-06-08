@@ -13,14 +13,38 @@ class AbstractTree
   end
   
   def self.new_leaf(data)
-    return SortedTree.new(data, new_empty(), new_empty())
+    return SortedTree.new(nil, data, new_empty(), new_empty())
   end
   
   def self.new_node(data, leftSubTree, rightSubTree)
-    newTree = SortedTree.new(data, leftSubTree, rightSubTree)
-    newTree.left = leftSubTree
-    newTree.right = rightSubTree
+    newTree = SortedTree.new(nil, data, leftSubTree, rightSubTree)
     return newTree
+  end
+  
+  # Hinzufügen
+  
+  def add(data)
+    node = find_node(data.key)
+    
+    if (node.empty?)
+      node.replace(node, new_leaf(data))
+    else
+      node.data.value = data.value
+    end
+    
+    return node
+  end
+  
+  # Suchen
+  
+  def find_node(key, &block)
+    node = find(key)
+    
+    if (block_given?)
+      return yield(node)
+    end
+    
+    return node
   end
   
   # Prädikate
@@ -57,32 +81,6 @@ class AbstractTree
     return parent.right == self
   end
   
-  #Invarianten
-  
-  def invariant?
-    # Sortierreihenfolge überprüfen
-    if (left != nil)
-      if(!left.data < self.data)
-        return false
-      end
-    end
-    
-    if (right != nil)
-      if(!left.data > self.data)
-        return false
-      end
-    end
-    
-    # Doppelverkettung prüfen
-    if (parent == nil)
-      return false
-    end
-    
-    if (!(right? || left?))
-      return false
-    end
-  end
-  
   # access
   def parent
     return @parent
@@ -91,18 +89,7 @@ class AbstractTree
   def parent=(parent)
     @parent = parent
   end
-  
-  # Bäume ersetzen
-  def replace(oldChild, newChild)    
-    if (oldChild.left?)
-      self.left=(newChild)
-    end
     
-    if (oldChild.right?)
-      self.right=(newChild)
-    end
-  end
-  
   # Eigenschaften
   def max
     maximum_value = self.data.value
