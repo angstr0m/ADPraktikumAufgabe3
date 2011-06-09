@@ -2,17 +2,23 @@
 
 class SizedSortedTree < SortedTree
   def initialize(parent, data, leftSubTree=EmptyTree.new(nil), rightSubTree=EmptyTree.new(nil))
-    p "---------------------"
-    p leftSubTree.class
-    p "---------------------"
     super(parent, data, leftSubTree, rightSubTree)
-    @size = super.size
+    @size
   end
   
   def size
+    if (@size.nil?)
+      @size = super.size
+    end
+    
     return @size
   end
   
+  def add(data)
+    @size = size + 1
+    super.add(data)
+  end
+    
   # Randomisiertes einfügen
   
   def addRandom(assoc) 

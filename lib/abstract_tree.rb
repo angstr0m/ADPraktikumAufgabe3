@@ -112,15 +112,15 @@ class AbstractTree
   end
   
   def size
-    reduce(0) {|l,r,n| l+r+1}  
+    return reduce(0) {|l,r,n| l+r+1}  
   end
   
   def max_depth
     reduce(0) {|l,r,n|
       if (l > r)
-        return l + 1
+        return (l + 1)
       else
-        return r + 1
+        return (r + 1)
       end
     }
   end
@@ -154,13 +154,11 @@ class AbstractTree
   # Ausgabe
   def to_s
     reduce("") {|l,r,n|
-      "[" + n.to_s() + l + r + "]" 
+      "[" + n.data.to_s + l + r + "]" 
     }
   end
   
   def to_s_indented
-    reduce("") {|l,r,n|
-      " " + n.to_s() + "\n"  + l + r  
-    }
+    
   end
 end

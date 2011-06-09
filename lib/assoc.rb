@@ -10,7 +10,7 @@ class Assoc
   
   def initialize(key, value)  
     @key = key
-    @value = [value]
+    @value = value
   end
   
   def self.[](key, value)

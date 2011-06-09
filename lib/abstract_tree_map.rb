@@ -8,9 +8,10 @@ require './sized_sorted_tree'
 require './assoc'
 
 class AbstractTreeMap < AbstractMap
-  def initialize(default)
+  def initialize(default=nil)
     super(default)
     @tree = AbstractTree.new_empty()
+    @tree.parent = self
   end
   
   def empty?
@@ -40,7 +41,12 @@ class AbstractTreeMap < AbstractMap
   end
   
   def [](key)
-    return @tree.find(key).data.value
+    tree = @tree.find(key)
+    if (tree.empty?)
+      return @default
+    else
+      return tree.data.value
+    end
   end
   
   def []=(key, value)
@@ -114,7 +120,7 @@ class AbstractTreeMap < AbstractMap
   end
   
   def size
-    @tree.size
+    return @tree.size
   end
   
   def replace(oldChild, newChild)
@@ -123,11 +129,12 @@ class AbstractTreeMap < AbstractMap
     newChild.parent = self
   end
   
+  def to_s
+    return @tree.to_s
+  end
   
   # Alle Methoden die nicht unterstützt werden abfangen, und an den tree weiter delegieren.
-  def missing_method(method, *args, &block)
+  def method_missing(method, *args, &block)
     @tree.send(method, *args, &block)
   end
 end
-
-p AbstractTree.new_leaf("Affe").left.class

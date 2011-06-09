@@ -1,8 +1,24 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+require './abstract_tree_map'
 
 class SortedTreeMap < AbstractTreeMap
-  def initialize()
-    
+  def initialize(default=nil)
+    super(default)
   end
 end
+
+test = SortedTreeMap.new()
+
+test["a"]=1
+test["b"]=2
+test["c"]=3
+test["d"]=4
+test["e"]=5
+test["f"]=6
+
+puts test.to_s_indented
+
+puts "JETZT KOMMT SIZE"
+puts test.size
+puts "DAS WAR SIZE!"
+
+puts test.max_depth

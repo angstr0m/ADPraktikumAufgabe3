@@ -97,28 +97,38 @@ class SortedTree < AbstractTree
   
   # Traversierungen
   def each_post(&block)
-    left.each_post(block)
-    right.each_post(block)
-    yield block(self)
+    left.each_post(&block)
+    right.each_post(&block)
+    block.call(self)
   end
   
   def each_pre(&block)
-    yield block(self)
-    left.each_post(block)
-    right.each_post(block)
+    block.call(self)
+    left.each_post(&block)
+    right.each_post(&block)
   end
   
   def each_in(&block)
-    left.each_post(block)
-    yield block(block)
-    right.each_post(block)
+    left.each_post(&block)
+    block.call(&block)
+    right.each_post(&block)
   end
   
   def reduce(empty_accu, &block)
-    left_accu = left.reduce(empty_accu, block)
-    right_accu = right.reduce(empty_accu, block)
+    left_accu = left.reduce(empty_accu, &block)
+    right_accu = right.reduce(empty_accu, &block) 
     
-    return yield block(left_accu, right_accu, self)
+    if (left_accu.nil? || right_accu.nil?)
+      raise "left oder right accu nil!"
+    end
+    
+    erg = block.call(left_accu, right_accu, self)
+    
+    if (erg.nil?)
+      raise "Ergebnis des Blocks ist nil!"
+    end
+    
+    return erg
   end
   
   # Suche
@@ -136,11 +146,11 @@ class SortedTree < AbstractTree
   
   # Bäume ersetzen
   def replace(oldChild, newChild)    
-    if (oldChild.left?)
+    if (oldChild.left?(newChild))
       self.left=(newChild)
     end
     
-    if (oldChild.right?)
+    if (oldChild.right?(newChild))
       self.right=(newChild)
     end
   end
@@ -158,7 +168,7 @@ class SortedTree < AbstractTree
     return temp
   end
 
-  def rotataLeft(node)
+  def rotateLeft(node)
     temp = node.right
     node.parent.replace(node, temp)
     node.right = temp.left

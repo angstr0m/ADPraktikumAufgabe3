@@ -27,6 +27,10 @@ class EmptyTree < AbstractTree
     return empty_accu
   end
   
+  def to_s_indentedR(accu)
+    return accu
+  end
+  
   # Eigenschaften
   
   def tree?
