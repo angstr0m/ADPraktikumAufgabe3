@@ -76,7 +76,6 @@ class SortedTree < AbstractTree
   end
   
   #Invarianten
-  
   def invariant?
     # Sortierreihenfolge überprüfen
     if (left != nil)
@@ -99,6 +98,15 @@ class SortedTree < AbstractTree
     if (!(right? || left?))
       return false
     end
+  end
+  
+  #Prädikate
+  def left?(node)
+    return left == node
+  end
+  
+  def right?(node)
+    return right == node
   end
   
   # Traversierungen
@@ -152,12 +160,17 @@ class SortedTree < AbstractTree
   
   # Bäume ersetzen
   def replace(oldChild, newChild)    
-    if (left?(oldChild))
-      left=(newChild)
+    if (left?(oldChild) && right?(oldChild))
+      raise "Something has gone horribly wrong!"
     end
     
-    if (right?(oldChild))
-      right=(newChild)
+    # Nicht das self wegnehmen!!!! ES IST UNFASSBAR WICHTIG!!!
+    if (left?(oldChild))
+      # DENK NICHT MAL DRAN ES ANZUFASSEN!
+      self.left=(newChild)  
+    elsif (right?(oldChild))
+      # DAS AUCH NICHT!!!
+      self.right=(newChild)
     end
     
     oldChild.parent = nil

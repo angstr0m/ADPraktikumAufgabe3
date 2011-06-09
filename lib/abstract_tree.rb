@@ -75,14 +75,6 @@ class AbstractTree
     return false
   end
   
-  def left?(node)
-    return left == node
-  end
-  
-  def right?(node)
-    return right == node
-  end
-  
   # access
   def parent
     return @parent

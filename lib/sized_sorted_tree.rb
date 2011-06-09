@@ -11,8 +11,19 @@ class SizedSortedTree < SortedTree
   end
   
   def add(data)
+    node = find_node(data.key)
+    
+    if (node.empty?)
+      return_node = AbstractTree.new_leaf(data)
+      node.parent.replace(node, return_node)
+    else
+      return_node = node
+      node.data.value = data.value
+    end
+    
     @size = size + 1
-    super.add(data)
+    
+    return return_node
   end
     
   # Randomisiertes einfügen
