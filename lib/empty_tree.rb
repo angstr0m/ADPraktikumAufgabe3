@@ -27,6 +27,12 @@ class EmptyTree < AbstractTree
     return empty_accu
   end
   
+  # Eigenschaften
+  
+  def tree?
+    return false
+  end
+  
   # Einfügen
   def addRandom(assoc) 
     add(assoc) 

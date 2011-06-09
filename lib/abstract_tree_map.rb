@@ -1,7 +1,10 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
+require './abstract_map'
+require './abstract_tree'
 require './empty_tree'
 require './sorted_tree'
+require './sized_sorted_tree'
 require './assoc'
 
 class AbstractTreeMap < AbstractMap
@@ -12,6 +15,10 @@ class AbstractTreeMap < AbstractMap
   
   def empty?
     @tree.empty?
+  end
+  
+  def handle?
+    return true
   end
   
   def fetch(key, &block)
@@ -46,13 +53,16 @@ class AbstractTreeMap < AbstractMap
   
   # Clone wird von Object übernommen
   
-  #TODO Was zur Hölle sollen wir hier tun?
   def sort
-    raise "abstractMethodError"
+    return self
   end
   
   def to_sorted_a
-    raise "abstractMethodError"
+    arr = []
+    each_in {|elem|
+      arr << elem
+    }
+    return arr
   end
   
   def ==(other)
@@ -119,3 +129,5 @@ class AbstractTreeMap < AbstractMap
     @tree.send(method, *args, &block)
   end
 end
+
+p AbstractTree.new_leaf("Affe").left.class

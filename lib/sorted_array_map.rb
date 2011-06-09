@@ -77,7 +77,6 @@ class SortedArrayMap < AbstractMap
   end
   
   def to_sorted_a
-    #TODO Ist das so richtig? Das Array ist eigentlich schon sortiert soweit es geht! Außer den Hash-Keys bleibt kein anderes Sortier-Kriterium.
     return @array
   end
   

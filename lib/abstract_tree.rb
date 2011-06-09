@@ -50,7 +50,7 @@ class AbstractTree
   # Prädikate
   
   def tree?
-    return inner? # TODO What I am supposed to do here O_O???
+    return true 
   end
   
   def empty?
@@ -70,7 +70,7 @@ class AbstractTree
   end
   
   def handle?
-    return false # TODO Kann ein Abstract tree überhaupt jemals ein handle sein? Dafür ist doch die abstractTreeMap zuständig.
+    return false
   end
   
   def left?(node)
@@ -135,13 +135,20 @@ class AbstractTree
     }
   end
   
-  # TODO Was soll diese Methode genau machen?
   def path_length
-    
+    return path_lengthR(0)
+  end
+  
+  def path_lengthR(accu)
+    if (root?)
+      return accu
+    else
+      return parent.path_lengthR(accu + 1)
+    end
   end
   
   def balance
-    
+    return max_depth-min_depth
   end
   
   # Ausgabe
