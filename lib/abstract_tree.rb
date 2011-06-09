@@ -112,7 +112,10 @@ class AbstractTree
   end
   
   def size
-    return reduce(0) {|l,r,n| l+r+1}  
+    peter = reduce(0) {|l,r,n| l+r+1}
+    puts "SEHEN SIE NUR, EIN PETER!"
+    puts peter
+    return peter
   end
   
   def max_depth

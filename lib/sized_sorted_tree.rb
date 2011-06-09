@@ -3,14 +3,10 @@
 class SizedSortedTree < SortedTree
   def initialize(parent, data, leftSubTree=EmptyTree.new(nil), rightSubTree=EmptyTree.new(nil))
     super(parent, data, leftSubTree, rightSubTree)
-    @size
+    @size = 1
   end
   
   def size
-    if (@size.nil?)
-      @size = super.size
-    end
-    
     return @size
   end
   

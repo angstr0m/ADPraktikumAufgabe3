@@ -104,14 +104,14 @@ class SortedTree < AbstractTree
   
   def each_pre(&block)
     block.call(self)
-    left.each_post(&block)
-    right.each_post(&block)
+    left.each_pre(&block)
+    right.each_pre(&block)
   end
   
   def each_in(&block)
-    left.each_post(&block)
+    left.each_in(&block)
     block.call(&block)
-    right.each_post(&block)
+    right.each_in(&block)
   end
   
   def reduce(empty_accu, &block)
