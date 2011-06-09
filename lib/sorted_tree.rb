@@ -28,11 +28,17 @@ class SortedTree < AbstractTree
   
   # Setter
   def left=(tree)
+    if (tree.nil?)
+      raise "Tree is empty!"
+    end
     @left = tree
     tree.parent = self
   end
   
   def right=(tree)
+    if (tree.nil?)
+      raise "Tree is empty!"
+    end
     @right = tree
     tree.parent = self
   end
@@ -133,7 +139,7 @@ class SortedTree < AbstractTree
   
   # Suche
   def find(key)
-    if(@data.key == key)
+    if(@data.key.eql?(key))
       return self
     end
     
@@ -146,13 +152,15 @@ class SortedTree < AbstractTree
   
   # Bäume ersetzen
   def replace(oldChild, newChild)    
-    if (oldChild.left?(newChild))
-      self.left=(newChild)
+    if (left?(oldChild))
+      left=(newChild)
     end
     
-    if (oldChild.right?(newChild))
-      self.right=(newChild)
+    if (right?(oldChild))
+      right=(newChild)
     end
+    
+    oldChild.parent = nil
   end
   
   # Rotieren

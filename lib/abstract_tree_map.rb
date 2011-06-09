@@ -22,11 +22,13 @@ class AbstractTreeMap < AbstractMap
     return true
   end
   
-  def fetch(key, &block)
+  def fetch(key, optionalDefault = nil, &block)
     node = @tree.find(key)
     
     if (node.empty?)
-      if (@default != nil)
+      if (optionalDefault != nil)
+        return optionalDefault
+      elsif (@default != nil)
         return @default
       else
         raise KeyError
@@ -110,8 +112,8 @@ class AbstractTreeMap < AbstractMap
   end
   
   def includes_value?(value)
-    @tree.each_post {|assoc|
-      if (assoc.key.eql?(value))
+    @tree.each_post {|elem|
+      if (elem.data.value.eql?(value))
         return true
       end
     }

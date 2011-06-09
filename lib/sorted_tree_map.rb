@@ -5,6 +5,3 @@ class SortedTreeMap < AbstractTreeMap
     super(default)
   end
 end
-
-
-

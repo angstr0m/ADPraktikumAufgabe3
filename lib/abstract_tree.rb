@@ -27,12 +27,14 @@ class AbstractTree
     node = find_node(data.key)
     
     if (node.empty?)
-      node.parent.replace(node, AbstractTree.new_leaf(data))
+      return_node = AbstractTree.new_leaf(data)
+      node.parent.replace(node, return_node)
     else
+      return_node = node
       node.data.value = data.value
     end
     
-    return node
+    return return_node
   end
   
   # Suchen
@@ -74,11 +76,11 @@ class AbstractTree
   end
   
   def left?(node)
-    return parent.left == self
+    return left == node
   end
   
   def right?(node)
-    return parent.right == self
+    return right == node
   end
   
   # access
@@ -112,10 +114,7 @@ class AbstractTree
   end
   
   def size
-    peter = reduce(0) {|l,r,n| l+r+1}
-    puts "SEHEN SIE NUR, EIN PETER!"
-    puts peter
-    return peter
+    reduce(0) {|l,r,n| l+r+1}
   end
   
   def max_depth
@@ -172,9 +171,5 @@ class AbstractTree
       end
     }
     acc
-  end
-  
-  def to_s_indentedR(acc, r)
-    r += 1
   end
 end
