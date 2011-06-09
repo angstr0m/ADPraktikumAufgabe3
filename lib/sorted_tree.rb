@@ -1,11 +1,17 @@
-require './abstract_tree'
+#require './abstract_tree'
 
 class SortedTree < AbstractTree
   def initialize(parent, data, leftSubTree, rightSubTree)
     super(parent)
     @data = data
-    left = leftSubTree
-    right = rightSubTree
+    @left = nil
+    @right = nil
+    
+    @left = leftSubTree
+    @left.parent = self
+    
+    @right = rightSubTree
+    @right.parent = self
   end
   
   def data

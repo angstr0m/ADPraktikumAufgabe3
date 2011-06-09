@@ -1,6 +1,6 @@
-require './abstract_tree'
+#require './abstract_tree'
 
-class EmtpyTree < AbstractTree
+class EmptyTree < AbstractTree
   def initialize(parent)
     super(parent)
   end

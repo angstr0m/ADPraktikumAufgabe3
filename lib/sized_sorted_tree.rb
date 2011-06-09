@@ -1,8 +1,11 @@
-require './sorted_tree'
+#require './sorted_tree'
 
 class SizedSortedTree < SortedTree
-  def initialize(parent, data, left, right)
-    super(parent, data, left, right)
+  def initialize(parent, data, leftSubTree=EmptyTree.new(nil), rightSubTree=EmptyTree.new(nil))
+    p "---------------------"
+    p leftSubTree.class
+    p "---------------------"
+    super(parent, data, leftSubTree, rightSubTree)
     @size = super.size
   end
   

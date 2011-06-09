@@ -1,4 +1,4 @@
-require './abstract_map'
+#require './abstract_map'
 
 class SortedArrayMap < AbstractMap
   def initialize(dafault)

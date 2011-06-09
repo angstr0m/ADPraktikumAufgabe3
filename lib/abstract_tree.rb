@@ -1,5 +1,5 @@
-require './empty_tree'
-require './sorted_tree'
+#require './empty_tree'
+#require './sorted_tree'
 
 class AbstractTree
   def initialize(parent)
@@ -9,11 +9,11 @@ class AbstractTree
   # Klassenmethoden
   
   def self.new_empty
-    return EmptyTree.new()
+    return EmptyTree.new(nil)
   end
   
   def self.new_leaf(data)
-    return SizedSortedTree.new(nil, data, new_empty(), new_empty())
+    return SizedSortedTree.new(nil, data)
   end
   
   def self.new_node(data, leftSubTree, rightSubTree)
@@ -27,7 +27,7 @@ class AbstractTree
     node = find_node(data.key)
     
     if (node.empty?)
-      node.replace(node, new_leaf(data))
+      node.parent.replace(node, AbstractTree.new_leaf(data))
     else
       node.data.value = data.value
     end
