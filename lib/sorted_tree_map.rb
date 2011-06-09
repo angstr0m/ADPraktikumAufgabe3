@@ -17,7 +17,7 @@ test["d"]=4
 test["e"]=5
 test["f"]=6
 
-#puts test.to_s_indented
+puts test.to_s_indented
 
 #p test.find("e").size
 

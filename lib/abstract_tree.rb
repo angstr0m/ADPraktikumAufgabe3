@@ -162,6 +162,15 @@ class AbstractTree
   end
   
   def to_s_indented
-    
+    acc = ""
+    each_pre {|elem|
+      tiefe = "\t" * elem.path_length
+      acc += tiefe + elem.data.to_s + "\n"
+    }
+    acc
+  end
+  
+  def to_s_indentedR(acc, r)
+    r += 1
   end
 end
