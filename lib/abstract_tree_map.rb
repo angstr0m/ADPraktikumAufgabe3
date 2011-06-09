@@ -1,11 +1,11 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
-require './abstract_map'
-require './abstract_tree'
-require './empty_tree'
-require './sorted_tree'
-require './sized_sorted_tree'
-require './assoc'
+require 'abstract_map'
+require 'abstract_tree'
+require 'empty_tree'
+require 'sorted_tree'
+require 'sized_sorted_tree'
+require 'assoc'
 
 class AbstractTreeMap < AbstractMap
   def initialize(default=nil)
@@ -106,7 +106,7 @@ class AbstractTreeMap < AbstractMap
   end
   
   def includes_key?(key)
-    return @tree.find(key) != nil 
+    return @tree.find(key).class != EmptyTree 
   end
   
   def includes_value?(value)

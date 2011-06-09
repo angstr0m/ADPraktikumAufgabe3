@@ -1,5 +1,5 @@
-require './assoc'
-require './Extensions_OO_V1'
+require 'assoc'
+require 'Extensions_OO_V1'
 
 class AbstractMap
   def initialize(default)

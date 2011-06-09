@@ -165,7 +165,11 @@ class AbstractTree
     acc = ""
     each_pre {|elem|
       tiefe = "\t" * elem.path_length
-      acc += tiefe + elem.data.to_s + "\n"
+      if (elem.empty?)
+        acc += tiefe + "EMPTY" + "\n"
+      else
+        acc += tiefe + elem.data.to_s + "\n"
+      end
     }
     acc
   end
