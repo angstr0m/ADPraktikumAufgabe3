@@ -186,8 +186,8 @@ class SortedArrayMap < AbstractMap
       end
     end
     
-    actual_index = ((intervall.max - intervall.min - 1) / 2).ceil
-    actual_key = @array[actual_index].key
+    actual_index = ((intervall.max - intervall.min) / 2).ceil
+    actual_key = @array[intervall.min + actual_index].key
     
     # Rekursion auf der entsprechenden Hälfte des Arrays fortführen
     if (key.hash > actual_key.hash)
