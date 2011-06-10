@@ -33,7 +33,7 @@ class SizedSortedTree < SortedTree
  
     if add_as_root 
       addRoot(assoc) 
-    elsif (data.key < assoc.key)  
+    elsif (assoc.key < data.key)  
       left.addRandom(assoc)  
     else         
       right.addRandom(assoc) 

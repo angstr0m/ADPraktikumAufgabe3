@@ -67,13 +67,15 @@ class SortedTree < AbstractTree
   
   # Root insertion
   def addRoot(assoc)
-    newNode = add(assoc)
+    node = add(assoc)
     
-    addRootT(newNode ,assoc)
-  end
-  
-  def addRootT(node, assoc)
-    
+    while(!node.root?)
+      if (node.parent.left?(node))
+        node.rotateRight(node.parent)
+      elsif(node.parent.right?(node))
+        node.rotateLeft(node.parent)
+      end
+    end
   end
   
   #Invarianten
@@ -81,22 +83,27 @@ class SortedTree < AbstractTree
     # Sortierreihenfolge überprüfen
     if (left != nil && !left.empty?)
       if(!(left.data.key < self.data.key))
+        puts "Fehler: left-key nicht kleiner als self-key!" + " left-key: " + left.data.key.to_s + " self-key: " + self.data.key.to_s + "\n Baum: \n" + to_s_indented
+        
         return false
       end
     end
     
     if (right != nil && !right.empty?)
       if(!(right.data.key > self.data.key))
+        puts "Fehler: right-key nicht groesser als self-key!" + " right-key: " + right.data.key.to_s + " self-key: " + self.data.key.to_s  + "\n Baum: \n" + to_s_indented
         return false
       end
     end
     
     # Doppelverkettung prüfen
     if (parent == nil)
+      puts "Fehler: parent ist nil!"
       return false
     end
     
     if (!(parent.right?(self) || parent.left?(self)) && !parent.handle?)
+      puts "Fehler: Dieser Baum ist weder rechter noch linker Sohn seines parents!" + "\n Baum: \n" + to_s_indented
       return false
     end
     
