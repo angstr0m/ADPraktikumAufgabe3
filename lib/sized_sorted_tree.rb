@@ -21,11 +21,68 @@ class SizedSortedTree < SortedTree
       node.data.value = data.value
     end
     
-    @size = size + 1
-    
     return return_node
   end
+  
+  # Setter
+  def left=(tree)
+    if (tree.nil?)
+      raise "Tree is empty!"
+    end
+    @left = tree
+    tree.parent = self
     
+#    if (!invariant?)
+#      raise "Invariante verletzt!" 
+#    end
+    
+    recalculateSizeR()
+  end
+  
+  def right=(tree)
+    if (tree.nil?)
+      raise "Tree is empty!"
+    end
+    @right = tree
+    tree.parent = self
+    
+#    if (!invariant?)
+#      raise "Invariante verletzt!" 
+#    end
+    
+    recalculateSizeR()
+  end
+    
+  # Bäume ersetzen
+  def replace(oldChild, newChild)    
+    if (left?(oldChild) && right?(oldChild))
+      raise "Something has gone horribly wrong!"
+    end
+    
+    # Nicht das self wegnehmen!!!! ES IST UNFASSBAR WICHTIG!!!
+    if (left?(oldChild))
+      # DENK NICHT MAL DRAN ES ANZUFASSEN!
+      self.left=(newChild)  
+    elsif (right?(oldChild))
+      # DAS AUCH NICHT!!!
+      self.right=(newChild)
+    end
+    
+    oldChild.parent = nil
+    
+    recalculateSizeR()
+  end
+  
+  # size neu berechnen
+  def recalculateSizeR()
+        
+    @size = 1 + left.size + right.size
+    
+    if (!parent.nil? && !root?)
+      parent.recalculateSizeR()
+    end
+  end
+  
   # Randomisiertes einfügen
   
   def addRandom(assoc) 
@@ -39,6 +96,6 @@ class SizedSortedTree < SortedTree
       right.addRandom(assoc) 
     end
     
-    @size = size + 1
+    recalculateSizeR()
   end
 end

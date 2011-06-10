@@ -76,6 +76,11 @@ class RandomTreeMapTest < Test::Unit::TestCase
     return referenceHash
   end
   
+  def test_size
+    test = setupFilledTree
+    assert_equal(@testKeys.size, test.size)
+  end
+  
   def test_empty
     
     test = setupEmptyTree

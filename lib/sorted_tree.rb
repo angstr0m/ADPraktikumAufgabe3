@@ -35,7 +35,7 @@ class SortedTree < AbstractTree
     tree.parent = self
     
 #    if (!invariant?)
-#     raise "Invariante verletzt!" 
+#      raise "Invariante verletzt!" 
 #    end
   end
   
@@ -47,7 +47,7 @@ class SortedTree < AbstractTree
     tree.parent = self
     
 #    if (!invariant?)
-#     raise "Invariante verletzt!" 
+#      raise "Invariante verletzt!" 
 #    end
   end
   

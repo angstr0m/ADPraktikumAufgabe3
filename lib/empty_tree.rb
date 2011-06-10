@@ -27,6 +27,10 @@ class EmptyTree < AbstractTree
     return empty_accu
   end
   
+  def size 
+    return 0
+  end
+  
   def to_s
     "EMPTYNODE"
   end
