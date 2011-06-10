@@ -56,7 +56,9 @@ class AbstractTreeMap < AbstractMap
   end
   
   def each(&block)
-    @tree.each_post(block)
+    @tree.each_post{|elem|
+      block.call(elem.data.key, elem.data.value)
+    }
   end
   
   # Clone wird von Object übernommen
@@ -68,7 +70,7 @@ class AbstractTreeMap < AbstractMap
   def to_sorted_a
     arr = []
     each_in {|elem|
-      arr << elem
+      arr << [elem.data.key, elem.data.value]
     }
     return arr
   end
@@ -83,11 +85,11 @@ class AbstractTreeMap < AbstractMap
     end
     
     other.each {|elem|
-      if (!self.includes_key?(elem.key))
+      if (!self.includes_key?(elem[0]))
         return false
       end
       
-      if (self[elem.key] != other[elem.key])
+      if (self[elem[0]] != other[elem[0]])
         return false
       end
     }
@@ -102,7 +104,7 @@ class AbstractTreeMap < AbstractMap
   def hash
     hash = 7
     each {|elem|
-      hash = hash + 13 * elem.data.hash
+      hash = hash + 13 * elem.hash
     }
     return hash
   end

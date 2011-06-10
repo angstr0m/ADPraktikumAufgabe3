@@ -33,6 +33,10 @@ class SortedTree < AbstractTree
     end
     @left = tree
     tree.parent = self
+    
+    if (!invariant?)
+     raise "Invariante verletzt!" 
+    end
   end
   
   def right=(tree)
@@ -41,6 +45,10 @@ class SortedTree < AbstractTree
     end
     @right = tree
     tree.parent = self
+    
+    if (!invariant?)
+     raise "Invariante verletzt!" 
+    end
   end
   
   # Randomisiertes einfügen
@@ -78,14 +86,14 @@ class SortedTree < AbstractTree
   #Invarianten
   def invariant?
     # Sortierreihenfolge überprüfen
-    if (left != nil)
-      if(!left.data < self.data)
+    if (left != nil && !left.empty?)
+      if(!(left.data.key < self.data.key))
         return false
       end
     end
     
-    if (right != nil)
-      if(!left.data > self.data)
+    if (right != nil && !right.empty?)
+      if(!(right.data.key > self.data.key))
         return false
       end
     end
@@ -95,9 +103,11 @@ class SortedTree < AbstractTree
       return false
     end
     
-    if (!(right? || left?))
+    if (!(parent.right?(self) || parent.left?(self)) && !parent.handle?)
       return false
     end
+    
+    return true
   end
   
   #Prädikate
@@ -124,7 +134,7 @@ class SortedTree < AbstractTree
   
   def each_in(&block)
     left.each_in(&block)
-    block.call(&block)
+    block.call(self)
     right.each_in(&block)
   end
   

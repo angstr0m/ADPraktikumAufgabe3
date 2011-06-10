@@ -8,6 +8,9 @@ require 'test/unit'
 require 'sorted_tree_map'
 
 class SortedTreeMapTest < Test::Unit::TestCase
+  
+  TestRange = "a".."f"
+  
   def setupEmptyTree
     test = SortedTreeMap.new()
 
@@ -15,34 +18,61 @@ class SortedTreeMapTest < Test::Unit::TestCase
   end
   
   def setupFilledTree
+  
+    @testKeys = (TestRange).to_a
+    @testValues = []
     
     test = SortedTreeMap.new()
-
-    test["a"]=1
-    test["b"]=2
-    test["c"]=3
-    test["d"]=4
-    test["e"]=5
-    test["f"]=6
     
+    i = 1
+    
+    @testKeys.each {|elem|
+      test[elem]=i
+      @testValues << i
+      i += 1
+    }
+        
     return test
   end
   
   def setupFilledTreeWithDefault(default)
     
+    @testKeys = (TestRange).to_a
+    @testValues = []
+    
     test = SortedTreeMap.new(default)
-
-    test["a"]=1
-    test["b"]=2
-    test["c"]=3
-    test["d"]=4
-    test["e"]=5
-    test["f"]=6
+    
+    i = 1
+    
+    @testKeys.each {|elem|
+      test[elem]=i
+      @testValues << i
+      i += 1
+    }
     
     return test
   end
   
+  def setupReferenceHash
+    
+    @testKeys = (TestRange).to_a
+    @testValues = []
+    
+    referenceHash = Hash.new()
+    
+    i = 1
+    
+    @testKeys.each {|elem|
+      referenceHash[elem]=i
+      @testValues << i
+      i += 1
+    }
+    
+    return referenceHash
+  end
+  
   def test_empty
+    
     test = setupEmptyTree
     assert_equal(true, test.empty?)
     test = setupFilledTree
@@ -94,7 +124,54 @@ class SortedTreeMapTest < Test::Unit::TestCase
   def test_set
     test = setupFilledTree
     
+    test["z"]=5
+    assert_equal(5,test["z"])
+    
     test["a"]=2
     assert_equal(2,test["a"])
+  end
+  
+  def test_each
+    test = setupFilledTree
+    
+    test.each {|key, value|
+      assert_true(@testKeys.include?(key))
+      assert_true(@testValues.include?(value))
+      
+      @testKeys.delete(key)
+      @testValues.delete(value)
+    }
+    
+    assert_true(@testKeys.empty?)
+    assert_true(@testValues.empty?)
+  end
+  
+  # clone von Object übernommen, daher kein test nötig
+  
+  def test_sort
+    # Es wird einfach self zurückgegeben. Nichts spannendes also.
+  end
+  
+  def test_sorted_a
+    test = setupFilledTree
+    sorted_a = test.to_sorted_a
+    
+    sorted_a.each_cons(2){|a,b|
+      assert_true(a[0] < b[0])
+    }
+  end
+  
+  def test_equal
+    test = setupFilledTree
+    referenceHash = setupReferenceHash
+    
+    assert_true(test == referenceHash)
+  end
+  
+  def test_eql?
+    test = setupFilledTree
+    referenceHash = setupFilledTree
+    
+    assert_true(test.eql?(referenceHash))
   end
 end
