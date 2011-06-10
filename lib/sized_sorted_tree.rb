@@ -85,7 +85,15 @@ class SizedSortedTree < SortedTree
   
   # Randomisiertes einfügen
   
-  def addRandom(assoc) 
+  def addRandom(assoc)
+    
+    node = find(assoc.key)
+    
+    if(!node.empty?)
+      node.data.value = assoc.value
+      return
+    end
+    
     add_as_root = (rand(size+1)== 0) 
  
     if add_as_root 
