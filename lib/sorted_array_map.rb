@@ -1,7 +1,5 @@
-#require './abstract_map'
-
 class SortedArrayMap < AbstractMap
-  def initialize(dafault)
+  def initialize(default = nil)
     super(default)
     @array = []
   end
@@ -10,11 +8,26 @@ class SortedArrayMap < AbstractMap
     return @array.empty?()
   end
   
-  def fetch(key = nil, &block)
+  def fetch(key = nil, default = nil, &block)
+    result = nil
     if (block_given?)
-      return @array.find &block
+      result = @array.find &block
     else
-      return @array.find {|assoc| assoc.key.eql?(key)}
+      result = @array.find {|assoc| assoc.key.eql?(key)}
+    end
+    
+    if (result.nil?)
+      if (!default.nil?)
+        return default
+      end
+      
+      if (!@default.nil?)
+        return @default
+      end
+      
+      raise KeyError
+    else
+      return result.value
     end
   end
   
@@ -27,12 +40,16 @@ class SortedArrayMap < AbstractMap
   end
   
   def [](key)
-    if(@array.find {|assoc| assoc.key.eql?(key)} == nil)
+    result = @array.find {|assoc| assoc.key.eql?(key)}
+    
+    if(result == nil)
       if (@default)
         return @default
       else
         return nil
       end
+    else
+      return result.value
     end
   end
   
@@ -65,7 +82,7 @@ class SortedArrayMap < AbstractMap
   
   def each(&block)
     @array.each {|elem|
-      block.call(elem.key, elem.value)
+      block.call([elem.key, elem.value])
     }
   end
   
@@ -77,7 +94,11 @@ class SortedArrayMap < AbstractMap
   end
   
   def to_sorted_a
-    return @array
+    arr = []
+    each {|elem|
+      arr << elem
+    }
+    return arr.sort!{|a,b| a[0] <=> b[0]}
   end
   
   # == ist in Object ausreichend implementiert!

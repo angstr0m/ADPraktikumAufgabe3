@@ -48,11 +48,11 @@ class AbstractMap
     raise "abstractMethodError"
   end
   
-  def includes_key?
+  def includes_key?(key)
     raise "abstractMethodError"
   end
   
-  def includes_value?
+  def includes_value?(value)
     raise "abstractMethodError"
   end
   
