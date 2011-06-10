@@ -33,14 +33,14 @@ class SortedArrayMap < AbstractMap
   
   def find_index(key)
     if (empty?)
-      return nil
+      return -1
     else
       return find_index_recursion(key, 0..(@array.size - 1))
     end
   end
   
   def [](key)
-    result = @array.find {|assoc| assoc.key.eql?(key)}
+    result = @array.find {|assoc| assoc.key == key}
     
     if(result == nil)
       if (@default)
@@ -64,7 +64,7 @@ class SortedArrayMap < AbstractMap
     index = find_index(key)
     
     # Ist der key schon vorhanden?
-    if (index == nil)
+    if (index == -1)
       # Falls der key nicht vorhanden ist, wird das neue key-value Paar sortiert eingefügt.
       i = @array.size
       
@@ -78,6 +78,39 @@ class SortedArrayMap < AbstractMap
       # Falls der key vorhanden ist, wird der alte Wert für value mit dem neuen überschrieben.
       @array[index].value = newAssoc.value
     end
+  end
+  
+  def ==(other)
+    
+    if (self.size != other.size)
+      return false
+    end
+    
+    other.each{|key, value|
+      if (!self.includes_key?(key))
+        return false
+      end
+      
+      if (!self.includes_value?(value))
+        return false
+      end
+    }
+    
+    return true
+  end
+  
+  def includes_key?(key)
+    return find_index(key) != -1
+  end
+  
+  def includes_value?(value)
+    each {|k, v|
+      if (v == value)
+        return true
+      end
+    }
+    
+    return false
   end
   
   def each(&block)
@@ -111,6 +144,10 @@ class SortedArrayMap < AbstractMap
     return @array.hash
   end 
   
+  def size
+    return @array.size
+  end
+  
   def to_s
     output_string = ""
     
@@ -125,29 +162,31 @@ class SortedArrayMap < AbstractMap
   
   def find_index_recursion(key, intervall)
     
+    # intervall hat nur noch ein Element
     if (intervall.first.eql?(intervall.last))
       if (@array[intervall.first].key.hash.eql?(key.hash))
         # Gesuchtes Element gefunden!
         return intervall.first
       else
         # Gesuchtes Element ist nicht in dieser Datenstruktur enthalten!
-        return nil
+        return -1
       end
     end
     
-    if (intervall.last.eql?(intervall.first + 1))
-      if (@array[intervall.first].key.hash.eql?(key.hash))
+    # Spezialfall für zwei Elemente
+    if (intervall.last == (intervall.first + 1))
+      if (@array[intervall.first].key.hash == key.hash)
         # Gesuchtes Element gefunden!
         return intervall.first
-      elsif (@array[intervall.last].key.hash.eql?(key.hash))
+      elsif (@array[intervall.last].key.hash == key.hash)
         return intervall.last
       else
         # Gesuchtes Element ist nicht in dieser Datenstruktur enthalten!
-        return nil
+        return -1
       end
     end
     
-    actual_index = (intervall.max - intervall.min) / 2
+    actual_index = ((intervall.max - intervall.min - 1) / 2).ceil
     actual_key = @array[actual_index].key
     
     # Rekursion auf der entsprechenden Hälfte des Arrays fortführen

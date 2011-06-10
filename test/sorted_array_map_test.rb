@@ -160,11 +160,7 @@ class SortedArrayMapTest < Test::Unit::TestCase
     test = setupFilledTree
     sorted_a = test.to_sorted_a
     
-    #p sorted_a
-    
     sorted_a.each_cons(2){|a,b|
-#      p "a = " + a.to_s
-#      p "b = " + b.to_s
       assert_true(a[0] < b[0])
     }
   end
