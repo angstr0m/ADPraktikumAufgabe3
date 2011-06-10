@@ -34,9 +34,9 @@ class SortedTree < AbstractTree
     @left = tree
     tree.parent = self
     
-    if (!invariant?)
-     raise "Invariante verletzt!" 
-    end
+#    if (!invariant?)
+#     raise "Invariante verletzt!" 
+#    end
   end
   
   def right=(tree)
@@ -46,9 +46,9 @@ class SortedTree < AbstractTree
     @right = tree
     tree.parent = self
     
-    if (!invariant?)
-     raise "Invariante verletzt!" 
-    end
+#    if (!invariant?)
+#     raise "Invariante verletzt!" 
+#    end
   end
   
   # Randomisiertes einfügen
@@ -66,7 +66,6 @@ class SortedTree < AbstractTree
   end
   
   # Root insertion
-  
   def addRoot(assoc)
     newNode = add(assoc)
     
@@ -74,13 +73,7 @@ class SortedTree < AbstractTree
   end
   
   def addRootT(node, assoc)
-    if (assoc.key() < node.data.key())
-      node.left = addRoot(node.left, assoc) 
-      node = rotateRight(node)
-    else 
-      node.right = addRoot(node.right, assoc) 
-      node = rotateLeft(node)
-    end
+    
   end
   
   #Invarianten

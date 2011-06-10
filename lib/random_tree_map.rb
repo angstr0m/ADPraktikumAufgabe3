@@ -2,7 +2,7 @@
 # and open the template in the editor.
 
 class RandomTreeMap < AbstractTreeMap
-  def initialize(default)
+  def initialize(default = nil)
     super(default)
   end
   
