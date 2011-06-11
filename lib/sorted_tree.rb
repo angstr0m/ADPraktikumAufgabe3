@@ -51,20 +51,6 @@ class SortedTree < AbstractTree
 #    end
   end
   
-  # Randomisiertes einfügen
-  
-  def addRandom(assoc) 
-    add_as_root = (rand(size+1)== 0) 
- 
-    if add_as_root 
-      addRoot(assoc) 
-    elsif (data.key < assoc.key)  
-      left.addRandom(assoc)  
-    else         
-      right.addRandom(assoc) 
-    end 
-  end
-  
   # Root insertion
   def addRoot(assoc)
     node = add(assoc)
@@ -157,15 +143,21 @@ class SortedTree < AbstractTree
   
   # Suche
   def find(key)
-    if(@data.key.eql?(key))
-      return self
+    node = self
+    
+    while (!node.empty?)
+      if(node.data.key.eql?(key))
+        return node
+      end
+
+      if (key > node.data.key)
+        node = node.right
+      else
+        node = node.left
+      end
     end
     
-    if (key > data.key)
-      return right.find(key)
-    else
-      return left.find(key)
-    end
+    return node
   end
   
   # Bäume ersetzen

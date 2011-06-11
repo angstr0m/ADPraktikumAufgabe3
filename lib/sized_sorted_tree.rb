@@ -81,33 +81,37 @@ class SizedSortedTree < SortedTree
   def recalculateSizeR()
     node = self
     
-    begin  
-      node.size = 1 + left.size + right.size
+    begin
+      node.size = 1 + node.left.size + node.right.size
       node = node.parent
-    end while(!node.nil? && !node.root?)
+    end while(!node.nil? && !node.handle?)
   end
   
   # Randomisiertes einfügen
   
   def addRandom(assoc)
-    
     node = find(assoc.key)
     
-    if(!node.empty?)
+    if (!node.empty?)
       node.data.value = assoc.value
       return
     end
     
-    add_as_root = (rand(size+1)== 0) 
- 
-    if add_as_root 
-      addRoot(assoc)
-    elsif (assoc.key < data.key)  
-      left.addRandom(assoc)  
-    else         
-      right.addRandom(assoc) 
+    node = self
+    
+    while (!(rand(node.size+1)== 0))
+      if (assoc.key < node.data.key)  
+        node = node.left  
+      else         
+        node = node.right 
+      end
     end
     
-    recalculateSizeR()
+    if (node.empty?)
+      node.add(assoc)
+    else
+      node.addRoot(assoc)
+    end
+    #node.recalculateSizeR()
   end
 end

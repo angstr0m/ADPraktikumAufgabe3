@@ -47,7 +47,7 @@ class FreqMapTest
     }
     optimalPathLength = @map.count_map.min_possible_tree_path_length
     
-    return (currentPathLength / optimalPathLength) * 100
+    return (currentPathLength.to_f / optimalPathLength.to_f) * 100
   end
   
   def writeTestDataToFile(file)
@@ -76,12 +76,13 @@ class Ergebnis
   end
   
   def to_s
-    "Algorithmus: " + @algorighmus.to_s + " Sortiert: " + @sorted.to_s + "Runtime: " + @runtime.to_s + " Balance: " + @balance.to_s
+    "Algorithmus: " + @algorighmus.to_s + " Sortiert: " + @sorted.to_s + " Runtime: " + @runtime.to_s + " Balance: " + @balance.to_s
   end
 end
 
-# SortedArrayMap, SortedTreeMap, , Hash 
-TestAlgorithms = [RandomTreeMap]
+#  
+TestAlgorithms = [SortedArrayMap, SortedTreeMap, RandomTreeMap, Hash]
+UseSortedData = false
 
 # Häufigkeitstabelle
 
@@ -104,18 +105,24 @@ TestAlgorithms.each {|algorithmus|
   # sorted
   test = FreqMapTest.new(algorithmus)
   test.readInText("./MobyDick.txt")
+  runtime = test.benchmarkMap
+  balance = test.calculateBalance
   
-  ergebnis_array << Ergebnis.new(algorithmus, test.benchmarkMap, test.calculateBalance, false)
+  ergebnis_array << Ergebnis.new(algorithmus, runtime, balance, false)
   puts "Nicht sortierte Daten Ende."
   
-  puts "Sortierte Daten Anfang."
-  # sorted
-  test = FreqMapTest.new(algorithmus)
-  test.readInText("./MobyDickSortiert.txt")
-  
-  ergebnis_array << Ergebnis.new(algorithmus, test.benchmarkMap, test.calculateBalance, true)
-  puts "Sortierte Daten Ende."
-  puts algorithmus.to_s + " abgeschlossen."
+  if (UseSortedData)
+    puts "Sortierte Daten Anfang."
+    # sorted
+    test = FreqMapTest.new(algorithmus)
+    test.readInText("./MobyDickSortiert.txt")
+    runtime = test.benchmarkMap
+    balance = test.calculateBalance
+
+    ergebnis_array << Ergebnis.new(algorithmus, runtime, balance, true)
+    puts "Sortierte Daten Ende."
+    puts algorithmus.to_s + " abgeschlossen."
+  end
 }
 
 puts ergebnis_array

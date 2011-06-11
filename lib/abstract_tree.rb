@@ -132,23 +132,29 @@ class AbstractTree
   def min_possible_tree_path_length
     elems_per_level = 1
     erg = 0
-    (0..(Math.log2(size).floor)).each {|level|
-      erg += elems_per_level * level
+    range = (0..(Math.log2(size).floor))
+    range.each {|level|
+      if(level == range.last)
+        # if in the last level, just add path_lengths for not yet inserted nodes
+        erg += (size - (2**(level)-1)) * level
+      else
+        erg += elems_per_level * level
+      end
       elems_per_level *= 2
     }
     return erg
   end
   
   def path_length
-    return path_lengthR(0)
-  end
-  
-  def path_lengthR(accu)
-    if (root?)
-      return accu
-    else
-      return parent.path_lengthR(accu + 1)
+    node = self
+    length = 0
+    
+    while(!node.root?)
+      length += 1
+      node = node.parent
     end
+    
+    return length
   end
   
   def balance
