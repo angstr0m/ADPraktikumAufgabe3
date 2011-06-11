@@ -1,11 +1,8 @@
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
-require 'abstract_map'
-require 'abstract_tree'
-require 'empty_tree'
-require 'sorted_tree'
-require 'sized_sorted_tree'
-require 'assoc'
+$: << File.expand_path(File.dirname(__FILE__) + "/lib")
+
+
 
 class AbstractTreeMap < AbstractMap
   def initialize(default=nil)
@@ -55,7 +52,7 @@ class AbstractTreeMap < AbstractMap
     @tree.add(Assoc.new(key,value))
   end
   
-  def each(&block)
+  def each(&block)    
     @tree.each_post{|elem|
       block.call(elem.data.key, elem.data.value)
     }

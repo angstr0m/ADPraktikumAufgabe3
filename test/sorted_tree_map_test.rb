@@ -5,7 +5,16 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 $LOAD_PATH << '/lib'
 
 require 'test/unit'
+require 'assoc'
+require 'abstract_map'
+require 'abstract_tree_map'
+require 'random_tree_map'
 require 'sorted_tree_map'
+require 'abstract_tree'
+require 'empty_tree'
+require 'sorted_tree'
+require 'sized_sorted_tree'
+require 'sorted_array_map'
 
 class SortedTreeMapTest < Test::Unit::TestCase
   
@@ -69,6 +78,11 @@ class SortedTreeMapTest < Test::Unit::TestCase
     }
     
     return referenceHash
+  end
+  
+  def test_size
+    test = setupFilledTree
+    assert_equal(@testKeys.size, test.size)
   end
   
   def test_empty

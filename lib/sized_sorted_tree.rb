@@ -97,7 +97,7 @@ class SizedSortedTree < SortedTree
     add_as_root = (rand(size+1)== 0) 
  
     if add_as_root 
-      addRoot(assoc) 
+      addRoot(assoc)
     elsif (assoc.key < data.key)  
       left.addRandom(assoc)  
     else         

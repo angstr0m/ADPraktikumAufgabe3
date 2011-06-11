@@ -1,5 +1,4 @@
-require 'assoc'
-require 'Extensions_OO_V1'
+$: << File.expand_path(File.dirname(__FILE__) + "/lib")
 
 class AbstractMap
   def initialize(default)
