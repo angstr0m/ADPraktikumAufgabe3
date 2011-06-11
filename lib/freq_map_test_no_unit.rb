@@ -15,14 +15,39 @@ require './sorted_tree'
 require './sized_sorted_tree'
 require './freq_map'
 require './abstract_tree_map'
+require './sorted_array_map'
 
 class FreqMapTest
-  def initialize
-    @map = FreqMap.new()
+  def initialize(map_class=RandomTreeMap)
+    @map = FreqMap.new(map_class)
+    @testdata = []
   end
   
-  def fillWithMobyDick
-    @map.fillWithText()
+  def readInText(aTextFile = './MobyDick.txt')
+    File.open(aTextFile, 'r') do |f1|
+      index = 0
+      while line = f1.gets
+        @testdata << line
+        index += 1
+      end
+    end
+  end
+  
+  def benchmarkMap
+    time do
+      @testdata.each {|elem|
+        @map.count(elem)
+      }
+    end
+  end
+  
+  def calculateBalance
+    currentPathLength = @map.count_map.reduce(0){|l,r,n|
+      n.path_length + l + r
+    }
+    optimalPathLength = @map.count_map.min_possible_tree_path_length
+    
+    return (currentPathLength / optimalPathLength) * 100
   end
   
   def writeTestDataToFile(file)
@@ -34,25 +59,63 @@ class FreqMapTest
       textDocument.write(string)
     }
   end
-end
-
-class BalanceTest
-  def self.getBalanceForTree(tree)
-    currentPathLength = tree.reduce(0){|l,r,n|
-      n.path_length + l + r
-    }
-    optimalPathLength = tree.size * Math.log2(tree.size/2)
-    
-    return (currentPathLength / optimalPathLength) * 100
+  
+  def time()
+    start = Time.now
+    yield
+    @time = Time.now - start
   end
 end
+
+class Ergebnis
+  def initialize(algorithmus, runtime, balance, sorted)
+    @algorighmus = algorithmus
+    @runtime = runtime
+    @balance = balance
+    @sorted = sorted # true, false
+  end
+  
+  def to_s
+    "Algorithmus: " + @algorighmus.to_s + " Sortiert: " + @sorted.to_s + "Runtime: " + @runtime.to_s + " Balance: " + @balance.to_s
+  end
+end
+
+# SortedArrayMap, SortedTreeMap, , Hash 
+TestAlgorithms = [RandomTreeMap]
 
 # Häufigkeitstabelle
 
 test = FreqMapTest.new
 testfile = File.new("./countmap.txt", "w")
 
-test.fillWithMobyDick
+test.readInText()
 test.writeTestDataToFile(testfile)
+puts "Benoetigte Zeit: " + test.benchmarkMap.to_s
+puts "Balance: " + test.calculateBalance.to_s
 
-puts "Arbeit abgeschlossen!"
+puts "Ausgabe in Datei abgeschlossen.\n"
+
+ergebnis_array = []
+
+TestAlgorithms.each {|algorithmus|
+  puts algorithmus.to_s + " startet."
+  
+  puts "Nicht sortierte Daten start."
+  # sorted
+  test = FreqMapTest.new(algorithmus)
+  test.readInText("./MobyDick.txt")
+  
+  ergebnis_array << Ergebnis.new(algorithmus, test.benchmarkMap, test.calculateBalance, false)
+  puts "Nicht sortierte Daten Ende."
+  
+  puts "Sortierte Daten Anfang."
+  # sorted
+  test = FreqMapTest.new(algorithmus)
+  test.readInText("./MobyDickSortiert.txt")
+  
+  ergebnis_array << Ergebnis.new(algorithmus, test.benchmarkMap, test.calculateBalance, true)
+  puts "Sortierte Daten Ende."
+  puts algorithmus.to_s + " abgeschlossen."
+}
+
+puts ergebnis_array

@@ -6,6 +6,10 @@ class SizedSortedTree < SortedTree
     @size = 1
   end
   
+  def size=(value)
+    @size = value
+  end
+  
   def size
     return @size
   end
@@ -75,12 +79,12 @@ class SizedSortedTree < SortedTree
   
   # size neu berechnen
   def recalculateSizeR()
-        
-    @size = 1 + left.size + right.size
+    node = self
     
-    if (!parent.nil? && !root?)
-      parent.recalculateSizeR()
-    end
+    begin  
+      node.size = 1 + left.size + right.size
+      node = node.parent
+    end while(!node.nil? && !node.root?)
   end
   
   # Randomisiertes einfügen

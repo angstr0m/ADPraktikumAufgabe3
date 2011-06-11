@@ -7,16 +7,9 @@ class FreqMap
   
   def initialize(map_class=RandomTreeMap, data=[])
     @map = map_class.new(0)
-  end
-  
-  def fillWithText(aTextFile = './MobyDick.txt')
-    File.open(aTextFile, 'r') do |f1|
-      index = 0
-      while line = f1.gets
-        count(line)
-        index += 1
-      end
-    end
+    data.each {|elem|
+      @map.count(elem)
+    }
   end
   
   def count(elem)

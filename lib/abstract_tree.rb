@@ -129,6 +129,16 @@ class AbstractTree
     }
   end
   
+  def min_possible_tree_path_length
+    elems_per_level = 1
+    erg = 0
+    (0..(Math.log2(size).floor)).each {|level|
+      erg += elems_per_level * level
+      elems_per_level *= 2
+    }
+    return erg
+  end
+  
   def path_length
     return path_lengthR(0)
   end
