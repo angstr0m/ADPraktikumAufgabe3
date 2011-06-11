@@ -84,6 +84,10 @@ end
 TestAlgorithms = [SortedArrayMap, SortedTreeMap, RandomTreeMap, Hash]
 UseSortedData = false
 
+#TestAlgorithms.each {|elem|
+#  puts elem.respond_to?('min_possible_tree_path_length')
+#}
+
 # Häufigkeitstabelle
 
 test = FreqMapTest.new
@@ -106,7 +110,11 @@ TestAlgorithms.each {|algorithmus|
   test = FreqMapTest.new(algorithmus)
   test.readInText("./MobyDick.txt")
   runtime = test.benchmarkMap
-  balance = test.calculateBalance
+  if (algorithmus == SortedTreeMap || algorithmus == RandomTreeMap)
+    balance = test.calculateBalance
+  else
+    balance = 0
+  end
   
   ergebnis_array << Ergebnis.new(algorithmus, runtime, balance, false)
   puts "Nicht sortierte Daten Ende."
@@ -117,7 +125,12 @@ TestAlgorithms.each {|algorithmus|
     test = FreqMapTest.new(algorithmus)
     test.readInText("./MobyDickSortiert.txt")
     runtime = test.benchmarkMap
-    balance = test.calculateBalance
+    
+    if (algorithmus == SortedTreeMap || algorithmus == RandomTreeMap)
+      balance = test.calculateBalance
+    else
+      balance = 0
+    end
 
     ergebnis_array << Ergebnis.new(algorithmus, runtime, balance, true)
     puts "Sortierte Daten Ende."
