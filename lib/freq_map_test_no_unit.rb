@@ -80,9 +80,9 @@ class Ergebnis
   end
 end
 
-#  
-TestAlgorithms = [SortedArrayMap, SortedTreeMap, RandomTreeMap, Hash]
-UseSortedData = false
+#  SortedTreeMap, 
+TestAlgorithms = [SortedArrayMap, RandomTreeMap, Hash]
+UseSortedData = true
 
 #TestAlgorithms.each {|elem|
 #  puts elem.respond_to?('min_possible_tree_path_length')
@@ -106,17 +106,19 @@ TestAlgorithms.each {|algorithmus|
   puts algorithmus.to_s + " startet."
   
   puts "Nicht sortierte Daten start."
-  # sorted
-  test = FreqMapTest.new(algorithmus)
-  test.readInText("./MobyDick.txt")
-  runtime = test.benchmarkMap
-  if (algorithmus == SortedTreeMap || algorithmus == RandomTreeMap)
-    balance = test.calculateBalance
-  else
-    balance = 0
+  if (!UseSortedData)
+    # sorted
+    test = FreqMapTest.new(algorithmus)
+    test.readInText("./MobyDick.txt")
+    runtime = test.benchmarkMap
+    if (algorithmus == SortedTreeMap || algorithmus == RandomTreeMap)
+      balance = test.calculateBalance
+    else
+      balance = 0
+    end
+
+    ergebnis_array << Ergebnis.new(algorithmus, runtime, balance, false)
   end
-  
-  ergebnis_array << Ergebnis.new(algorithmus, runtime, balance, false)
   puts "Nicht sortierte Daten Ende."
   
   if (UseSortedData)
